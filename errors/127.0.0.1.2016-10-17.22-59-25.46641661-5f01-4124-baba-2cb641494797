@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.AttributeError'> 'DAL' object has no attribute 'tbGames'"
+p3
+sS'layer'
+p4
+S'/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/applications/touga/controllers/home.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n\n@auth.requires_login()\ndef index():\n    mGames = db(db.tbGames.id>0).select(orderby=db.tbGame.mName|db.tbGame.mIsJoinAble)\n    return dict(mGames=mGames)\n\nresponse._vars=response._caller(index)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/gluon/restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/applications/touga/controllers/home.py", line 8, in <module>\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/gluon/globals.py", line 417, in <lambda>\n    self._caller = lambda f: f()\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/gluon/tools.py", line 4241, in f\n    return action(*a, **b)\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/applications/touga/controllers/home.py", line 5, in index\n    mGames = db(db.tbGames.id>0).select(orderby=db.tbGame.mName|db.tbGame.mIsJoinAble)\n  File "/Users/fabiofilho/Documents/Deployment/Web2Py/web2py/gluon/packages/dal/pydal/base.py", line 921, in __getattr__\n    return BasicStorage.__getattribute__(self, key)\nAttributeError: \'DAL\' object has no attribute \'tbGames\'\n'
+p11
+s.

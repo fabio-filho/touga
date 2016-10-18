@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.TypeError'> accepts() takes at least 2 arguments (1 given)"
+p3
+sS'layer'
+p4
+S'/Users/fabiofilho/Downloads/web2py 2/applications/touga/controllers/home.py'
+p5
+sS'code'
+p6
+S"# -*- coding: utf-8 -*-\n# tente algo como\ndef index():\n    mForm = SQLFORM(db.tbGame, submit=T('Save'))\n    mForm.accepts()\n    return dict(mForm=mForm)\n\nresponse._vars=response._caller(index)\n"
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/Users/fabiofilho/Downloads/web2py 2/gluon/restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "/Users/fabiofilho/Downloads/web2py 2/applications/touga/controllers/home.py", line 8, in <module>\n  File "/Users/fabiofilho/Downloads/web2py 2/gluon/globals.py", line 417, in <lambda>\n    self._caller = lambda f: f()\n  File "/Users/fabiofilho/Downloads/web2py 2/applications/touga/controllers/home.py", line 5, in index\n    mForm.accepts()\nTypeError: accepts() takes at least 2 arguments (1 given)\n'
+p11
+s.

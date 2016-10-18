@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+
+<br><br>
+
+<div class="panel panel-success">
+
+  <div class="panel-heading">
+    <h3>
+      <i><b>{{=T('Tournaments')}}</b> </i>
+    </h3>
+  </div>
+
+  <div class="panel-body">
+
+
+    {{if len(mGames) > 0:}}
+    {{from gluon.tools import prettydate}}
+     <table class="table table-striped">
+        <tr>
+          <th></th>
+          <th><h4><b>{{=T("Name")}}<b><h4></th>
+          <th><h4><b>{{=T("Is ")}}<b><h4></th>
+          <th><h4><b>{{=T("Last modification")}}<b><h4></th>
+          <th></th>
+        </tr>
+
+        {{for mGame in mGames:}}
+
+        <tr>
+            <td>
+                  <td>
+                    {{=mGame.mName}}
+                  </td>
+                  <td>
+                    {{if mGame.mIsJoinAble:}}
+                        {{=T('Yes')}}
+                    {{else:}}
+                        {{=T('No')}}
+                    {{pass}}
+                  </td>
+                  <td>
+                    {{=prettydate(mGame.modified_on)}}
+                  </td>
+                  <td>
+                    <a class="btn btn-default" href="{{=URL('game','index',args=[mGame.id])}}">{{=T('View')}}</a>
+                  </td>
+            </tr>
+
+
+        {{pass}}
+       </table>
+
+          <br><br>
+
+          {{else:}}
+
+          <ul class="list-group">
+            <li class="list-group-item"> <h2> <b> {{=T("No tournaments availables!")}} </b> </h2> </li>
+          </ul>
+
+    {{pass}}
+
+  </div>
+
+  <div class="panel-footer">
+
+  </div>
+
+</div>

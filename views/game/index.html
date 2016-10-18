@@ -1,0 +1,71 @@
+{{extend 'layout.html'}}
+
+<br><br>
+
+<div class="panel panel-danger">
+
+  <div class="panel-heading">
+    <h3>
+      <i><b>{{=mGame.mName}}</b> </i>
+    </h3>
+  </div>
+
+  <div class="panel-body">
+
+    {{if mCanShowsJoinButton:}}
+      <div class="btn-group btn-group-justified" role="group" aria-label="">
+        <a class="btn btn-info" role="button" href="{{=URL('game', 'join',args=auth.user_id)}}">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          {{=T('Join in tournament')}}
+        </a>
+      </div>
+
+      <br>
+    {{pass}}
+
+    {{if len(mAuthGame) > 0:}}
+    {{from gluon.tools import prettydate}}
+     <table class="table table-striped">
+        <tr>
+          <th></th>
+          <th><h4><b>{{=db.tbAuthGame.mAuth.label}}<b><h4></th>
+          <th><h4><b>{{=db.tbAuthGame.mPoints.label}}<b><h4></th>
+          <th><h4><b>{{=db.tbAuthGame.mVictories.label}}<b><h4></th>
+          <th></th>
+        </tr>
+
+        {{for mAG in mAuthGame:}}
+
+        <tr>
+            <td>
+              <td>
+                {{=mAG.mAuth.first_name}} {{=mAG.mAuth.last_name}}
+              </td>
+              <td>
+                {{=mAG.mPoints}}
+              </td>
+              <td>
+                {{=mAG.mVictories}}
+              </td>
+            </tr>
+
+        {{pass}}
+       </table>
+
+          <br><br>
+
+          {{else:}}
+
+          <ul class="list-group">
+            <li class="list-group-item"> <h2> <b> {{=T("No players!")}} </b> </h2> </li>
+          </ul>
+
+    {{pass}}
+
+  </div>
+
+  <div class="panel-footer">
+
+  </div>
+
+</div>
