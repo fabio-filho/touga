@@ -1,5 +1,46 @@
 # -*- coding: utf-8 -*-
 
+
+class MessageBox:
+
+	def __init__ (self, mMessage):
+		session.flash = mMessage
+		pass
+
+	def showWarning(self):
+		session.mMessageBox_Theme = "warning"
+		session.mMessageBox_Icon  = "glyphicon glyphicon-warning-sign"
+		session.mShowed = False
+		pass
+
+	def showSuccess(self):
+		session.mMessageBox_Theme = "success"
+		session.mMessageBox_Icon  = "glyphicon glyphicon-ok-circle"
+		pass
+
+	def showError(self):
+		session.mMessageBox_Theme = "danger"
+		session.mMessageBox_Icon  = "glyphicon glyphicon-remove-circle"
+		pass
+
+	def showInfo(self):
+		session.mMessageBox_Theme = "info"
+		session.mMessageBox_Icon  = "glyphicon glyphicon-info-sign"
+		pass
+
+	def setTimer(mTimer):
+		try:
+			session.mMessageBox_Timer = int(mTimer)
+		except:
+			session.mMessageBox_Timer = 4000
+		pass
+
+	def resetTimer():
+		session.mMessageBox_Timer = 4000
+		pass
+
+
+
 class DateTime:
 
 	def __init__():

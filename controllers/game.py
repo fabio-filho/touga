@@ -4,15 +4,18 @@
 
 def index():
     try:
-        mGame = db.tbGame(request.args[0])
-        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=db.tbAuthGame.created_by)
+        if request.args[0]!=session.current_game:
+            session.current_game = request.args[0]
+
+        mGame = db.tbGame(session.current_game)
+        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=db.tbAuthGame.mAuth)
 
         mCanShowsJoinButton = canAuthJoin(mGame.id)
-
+                
         return dict(mGame=mGame, mAuthGame=mAuthGame, mCanShowsJoinButton=mCanShowsJoinButton)
     except Exception as mError:
         print mError
-        redirect(URL('default','index'))
+        redirect(URL('home','index'))
 
 
 @auth.requires(lambda: MyAuth.isMaster())
@@ -28,13 +31,13 @@ def management():
 
 def canAuthJoin(mGameId):
     mGame = db.tbGame(mGameId)
-    mCanShowsJoinButton = False
+    print mGame
     if MyAuth.isLogged():
-        if mGame.mIsJoinAble:
-            if len(db((db.tbAuthGame.mGame==db.tbAuthGame.created_by)&(db.tbAuthGame.mGame==mGameId)).select())==0:
-                mCanShowsJoinButton = True
+        print db((db.tbAuthGame.mAuth==auth.user_id)&(db.tbAuthGame.mGame==mGameId)).count()
+        if db((db.tbAuthGame.mAuth==auth.user_id)&(db.tbAuthGame.mGame==mGameId)).count()>0:
+            return False
 
-    return mCanShowsJoinButton
+    return mGame.mIsJoinAble
 
 
 
@@ -42,13 +45,11 @@ def canAuthJoin(mGameId):
 def join():
     try:
         if not canAuthJoin(request.args[0]): redirect(URL('default','index'))
-
         db.tbAuthGame.insert(mAuth=auth.user_id, mGame=request.args[0])
-
         session.flash = T('Joined')
-        redirect(URL('game','index', args=request.args[0]))
+        redirect(URL('touga', 'game','index'))
 
     except Exception as mError:
         print mError
-        session.flash = T('Some erros were found, try again!')
-        redirect(URL('default','index'))
+        #session.flash = T('Some erros were found, try again!')
+        redirect(URL('home','index'))

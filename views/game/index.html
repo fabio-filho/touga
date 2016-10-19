@@ -14,12 +14,21 @@
 
     {{if mCanShowsJoinButton:}}
       <div class="btn-group btn-group-justified" role="group" aria-label="">
-        <a class="btn btn-info" role="button" href="{{=URL('game', 'join',args=auth.user_id)}}">
+        <a class="btn btn-info" role="button" href="{{=URL('game', 'join',args=mGame.id)}}">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
           {{=T('Join in tournament')}}
         </a>
       </div>
+      <br>
+    {{pass}}
 
+    {{if MyAuth.isMaster():}}
+      <div class="btn-group btn-group-justified" role="group" aria-label="">
+        <a class="btn btn-success" role="button" href="{{=URL('game', 'add_match',args=mGame.id)}}">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          {{=T('Add Match')}}
+        </a>
+      </div>
       <br>
     {{pass}}
 
@@ -27,25 +36,46 @@
     {{from gluon.tools import prettydate}}
      <table class="table table-striped">
         <tr>
-          <th></th>
           <th><h4><b>{{=db.tbAuthGame.mAuth.label}}<b><h4></th>
-          <th><h4><b>{{=db.tbAuthGame.mPoints.label}}<b><h4></th>
-          <th><h4><b>{{=db.tbAuthGame.mVictories.label}}<b><h4></th>
-          <th></th>
+          <th><h4><b>J<b><h4></th>
+          <th><h4><b>VIT<b><h4></th>
+          <th><h4><b>EMP<b><h4></th>
+          <th><h4><b>DER<b><h4></th>
+          <th><h4><b>GP<b><h4></th>
+          <th><h4><b>GC<b><h4></th>
+          <th><h4><b>SG<b><h4></th>
+          <th><h4><b>PTS<b><h4></th>
         </tr>
 
         {{for mAG in mAuthGame:}}
 
         <tr>
-            <td>
               <td>
-                {{=mAG.mAuth.first_name}} {{=mAG.mAuth.last_name}}
+                <b>{{=mAG.mAuth.first_name}} {{=mAG.mAuth.last_name}}</b>
               </td>
               <td>
-                {{=mAG.mPoints}}
+                {{=mAG.mMatches}}
               </td>
               <td>
                 {{=mAG.mVictories}}
+              </td>
+              <td>
+                {{=mAG.mDraws}}
+              </td>
+              <td>
+                {{=mAG.mLosses}}
+              </td>
+              <td>
+                {{=mAG.mProGoals}}
+              </td>
+              <td>
+                {{=mAG.mGoalsAgainst}}
+              </td>
+              <td>
+                {{=mAG.mProGoals - mAG.mGoalsAgainst}}
+              </td>
+              <td>
+                <b>{{=mAG.mPoints}}</b>
               </td>
             </tr>
 
