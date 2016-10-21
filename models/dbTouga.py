@@ -26,5 +26,5 @@ db.define_table("tbAuthGame",
     Field("mLosses", "integer", default=0, label=T('Losses')),
     Field("mProGoals", "integer", default=0, label=T('ProGoals')),
     Field("mGoalsAgainst", "integer", default=0, label=T('GoalsAgainst')),
-    auth.signature # This field one will register the auth field for this table.
+    auth.signature # The auth signature will register the auth history for this table.
 )

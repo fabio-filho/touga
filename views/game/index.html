@@ -22,15 +22,24 @@
       <br>
     {{pass}}
 
-    {{if MyAuth.isMaster():}}
+    {{if MyAuth.isMaster() and mMatchForm:}}
       <div class="btn-group btn-group-justified" role="group" aria-label="">
-        <a class="btn btn-success" role="button" href="{{=URL('game', 'add_match',args=mGame.id)}}">
+        <a class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseMatch" aria-expanded="false" aria-controls="collapseMatch">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
           {{=T('Add Match')}}
         </a>
       </div>
+
       <br>
+
+      <div class="collapse" id="collapseMatch">
+        <div class="well">
+          {{=mMatchForm}}
+        </div>
+      </div>
     {{pass}}
+
+
 
     {{if len(mAuthGame) > 0:}}
     {{from gluon.tools import prettydate}}
