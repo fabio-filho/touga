@@ -8,7 +8,7 @@ def index():
             session.current_game = request.args[0]
 
         mGame = db.tbGame(session.current_game)
-        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=db.tbAuthGame.mAuth)
+        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=~db.tbAuthGame.mPoints|~db.tbAuthGame.mVictories|(db.tbAuthGame.mProGoals-db.tbAuthGame.mGoalsAgainst))
 
         mCanShowsJoinButton = canAuthJoin(mGame.id)
         mMatchForm = getInputMatchForm(mGame)
@@ -56,19 +56,19 @@ def join():
 
 def getInputMatchForm(mGame):
     if not MyAuth.isMaster(): return None
+
     mGoalsRange = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     mForm = SQLFORM.factory(
-        Field('mPlayerOne', 'reference auth_user',label=T('Player 1'), requires=IS_IN_DB(db,db.auth_user.id,'%(first_name)s %(last_name)s') ),
-        Field('mPlayerOneGoals', 'integer', label=T('Player 1 goals'), requires=IS_IN_SET(mGoalsRange) ),
-        Field('mPlayerOneGoalsAgainst', 'integer', label=T('Player 1 goals against'), requires=IS_IN_SET(mGoalsRange) ),
-        Field('mPlayerTwo', 'reference auth_user', label=T('Player 2'), requires=IS_IN_DB(db,db.auth_user.id,'%(first_name)s %(last_name)s') ),
-        Field('mPlayerTwoGoals', 'integer', label=T('Player 2 goals'), requires=IS_IN_SET(mGoalsRange) ),
-        Field('mPlayerTwoGoalsAgainst', 'integer', label=T('Player 2 goals against'), requires=IS_IN_SET(mGoalsRange) )
+        Field('mPlayerOne', 'reference auth_user',label=T('Player 1'), default=0,requires=IS_IN_DB(db,db.auth_user.id,'%(first_name)s %(last_name)s') ),
+        Field('mPlayerOneGoals', 'integer', label=T('Player 1 goals'), default=0, requires=IS_IN_SET(mGoalsRange) ),
+        Field('mPlayerTwo', 'reference auth_user', label=T('Player 2'), default=0, requires=IS_IN_DB(db,db.auth_user.id,'%(first_name)s %(last_name)s') ),
+        Field('mPlayerTwoGoals', 'integer', label=T('Player 2 goals'), default=0, requires=IS_IN_SET(mGoalsRange) ),
     )
 
     if mForm.process(onvalidation=onMatchFormValidation).accepted:
         addMatch(mGame,mForm)
         session.flash = T('Match added!')
+        redirect(URL('game','index', args=mGame))
     elif mForm.errors:
         session.flash = T('Erros in form, please check it out!')
 
@@ -92,19 +92,19 @@ def updateAuthGameRecord(mGame, mPlayerOne, mPlayerTwo):
         mLosses       = db.tbAuthGame.mLosses       + 1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 0 else 0,
         mMatches      = db.tbAuthGame.mMatches      + 1 ,
         mProGoals     = db.tbAuthGame.mProGoals     + mPlayerOne[1],
-        mGoalsAgainst = db.tbAuthGame.mGoalsAgainst + mPlayerOne[2] ,
+        mGoalsAgainst = db.tbAuthGame.mGoalsAgainst + mPlayerTwo[1]
     )
 
 def addMatch(mGame, mForm):
     # Update player one
     updateAuthGameRecord(mGame,
-        [mForm.vars.mPlayerOne, mForm.vars.mPlayerOneGoals, mForm.vars.mPlayerOneGoalsAgainst],
-        [mForm.vars.mPlayerTwo, mForm.vars.mPlayerTwoGoals, mForm.vars.mPlayerTwoGoalsAgainst]
+        [mForm.vars.mPlayerOne, mForm.vars.mPlayerOneGoals],
+        [mForm.vars.mPlayerTwo, mForm.vars.mPlayerTwoGoals]
     )
     # Update player two
     updateAuthGameRecord(mGame,
-        [mForm.vars.mPlayerTwo, mForm.vars.mPlayerTwoGoals, mForm.vars.mPlayerTwoGoalsAgainst],
-        [mForm.vars.mPlayerOne, mForm.vars.mPlayerOneGoals, mForm.vars.mPlayerOneGoalsAgainst]
+        [mForm.vars.mPlayerTwo, mForm.vars.mPlayerTwoGoals],
+        [mForm.vars.mPlayerOne, mForm.vars.mPlayerOneGoals]
     )
     pass
 
