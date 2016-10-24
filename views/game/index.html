@@ -40,66 +40,83 @@
     {{pass}}
 
 
+    <style>
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+        }
+    </style>
 
     {{if len(mAuthGame) > 0:}}
     {{from gluon.tools import prettydate}}
     <div class="table-responsive">
-     <table class="table table-striped">
+     <table class="table table-bordered">
+       <thread>
         <tr>
-          <th><h4><b>{{=db.tbAuthGame.mAuth.label}}<b><h4></th>
-          <th><h4><b>J<b><h4></th>
-          <th><h4><b>VIT<b><h4></th>
-          <th><h4><b>EMP<b><h4></th>
-          <th><h4><b>DER<b><h4></th>
-          <th><h4><b>GP<b><h4></th>
-          <th><h4><b>GC<b><h4></th>
-          <th><h4><b>SG<b><h4></th>
-          <th><h4><b>PTS<b><h4></th>
+          <th><b>POS<b></th>
+          <th><b>{{=db.tbAuthGame.mAuth.label}}<b></th>
+          <th><b>PTS<b></th>
+          <th><b>J<b></th>
+          <th><b>VIT<b></th>
+          <th><b>EMP<b></th>
+          <th><b>DER<b></th>
+          <th><b>GP<b></th>
+          <th><b>GC<b></th>
+          <th><b>SG<b></th>
         </tr>
-
+      </thread>
+        {{mIndex = 0}}
         {{for mAG in mAuthGame:}}
-
-        <tr>
-              <td>
-                <b>{{=mAG.mAuth.first_name}} {{=mAG.mAuth.last_name}}</b>
-              </td>
-              <td>
-                {{=mAG.mMatches}}
-              </td>
-              <td>
-                {{=mAG.mVictories}}
-              </td>
-              <td>
-                {{=mAG.mDraws}}
-              </td>
-              <td>
-                {{=mAG.mLosses}}
-              </td>
-              <td>
-                {{=mAG.mProGoals}}
-              </td>
-              <td>
-                {{=mAG.mGoalsAgainst}}
-              </td>
-              <td>
-                {{=mAG.mProGoals - mAG.mGoalsAgainst}}
-              </td>
-              <td>
-                <b>{{=mAG.mPoints}}</b>
-              </td>
-            </tr>
-
+        {{mIndex+=1}}
+          <tbody>
+            {{if mIndex%2==0:}}
+             <tr>
+            {{else:}}
+             <tr style="background-color:#ffffff;">
+            {{pass}}
+                <td>
+                  <b>{{=mIndex}}</b>
+                </td>
+                <td>
+                  <b>{{=mAG.mAuth.first_name}} {{=mAG.mAuth.last_name}}</b>
+                </td>
+                <td>
+                  <b>{{=mAG.mPoints}}</b>
+                </td>
+                <td>
+                  {{=mAG.mMatches}}
+                </td>
+                <td>
+                  {{=mAG.mVictories}}
+                </td>
+                <td>
+                  {{=mAG.mDraws}}
+                </td>
+                <td>
+                  {{=mAG.mLosses}}
+                </td>
+                <td>
+                  {{=mAG.mProGoals}}
+                </td>
+                <td>
+                  {{=mAG.mGoalsAgainst}}
+                </td>
+                <td>
+                  {{=mAG.mProGoals - mAG.mGoalsAgainst}}
+                </td>
+              </tr>
+          </tbody>
         {{pass}}
        </table>
        </div>
 
-          <br><br>
+      <br><br>
 
-          {{else:}}
+      {{else:}}
 
-          <ul class="list-group">
-            <li class="list-group-item"> <h2> <b> {{=T("No players!")}} </b> </h2> </li>
-          </ul>
+      <ul class="list-group">
+        <li class="list-group-item"> <h2> <b> {{=T("No players!")}} </b> </h2> </li>
+      </ul>
 
     {{pass}}
 
