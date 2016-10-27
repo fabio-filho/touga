@@ -7,8 +7,8 @@ def index():
         if request.args[0]!=session.current_game:
             session.current_game = request.args[0]
 
-        mGame = db.tbGame(session.current_game)
-        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=~db.tbAuthGame.mPoints|~db.tbAuthGame.mVictories|(db.tbAuthGame.mProGoals-db.tbAuthGame.mGoalsAgainst))
+        mGame = db.tbGame(session.current_game)		
+        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=~db.tbAuthGame.mPoints|~db.tbAuthGame.mVictories|~(db.tbAuthGame.mProGoals-db.tbAuthGame.mGoalsAgainst)|~db.tbAuthGame.mProGoals)
 
         mCanShowsJoinButton = canAuthJoin(mGame.id)
         mMatchForm = getInputMatchForm(mGame)
