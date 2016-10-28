@@ -7,8 +7,8 @@ def index():
         if request.args[0]!=session.current_game:
             session.current_game = request.args[0]
 
-        mGame = db.tbGame(session.current_game)		
-        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=~db.tbAuthGame.mPoints|~db.tbAuthGame.mVictories|~(db.tbAuthGame.mProGoals-db.tbAuthGame.mGoalsAgainst)|~db.tbAuthGame.mProGoals)
+        mGame = db.tbGame(session.current_game)
+        mAuthGame = db(db.tbAuthGame.mGame==mGame.id).select(orderby=~db.tbAuthGame.mPoints|~db.tbAuthGame.mVictories|~(db.tbAuthGame.mProGoals-db.tbAuthGame.mGoalsAgainst)|~db.tbAuthGame.mProGoals|db.tbAuthGame.mAuth)
 
         mCanShowsJoinButton = canAuthJoin(mGame.id)
         mMatchForm = getInputMatchForm(mGame)
@@ -82,14 +82,15 @@ def onMatchFormValidation(mForm):
 
 
 def updateAuthGameRecord(mGame, mPlayerOne, mPlayerTwo):
+    print mPlayerOne, mPlayerTwo,' pts ', getPointsByGols(mPlayerOne[1], mPlayerTwo[1]), ' - v ',1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1])==3 else 0
     db(
         (db.tbAuthGame.mAuth==mPlayerOne[0])
         & (db.tbAuthGame.mGame==mGame)
     ).update(
         mPoints       = db.tbAuthGame.mPoints       + getPointsByGols(mPlayerOne[1], mPlayerTwo[1]),
-        mVictories    = db.tbAuthGame.mVictories    + 1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 3 else 0,
-        mDraws        = db.tbAuthGame.mDraws        + 1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 1 else 0,
-        mLosses       = db.tbAuthGame.mLosses       + 1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 0 else 0,
+        mVictories    = db.tbAuthGame.mVictories    + (1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 3 else 0),
+        mDraws        = db.tbAuthGame.mDraws        + (1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 1 else 0),
+        mLosses       = db.tbAuthGame.mLosses       + (1 if getPointsByGols(mPlayerOne[1], mPlayerTwo[1]) == 0 else 0),
         mMatches      = db.tbAuthGame.mMatches      + 1 ,
         mProGoals     = db.tbAuthGame.mProGoals     + mPlayerOne[1],
         mGoalsAgainst = db.tbAuthGame.mGoalsAgainst + mPlayerTwo[1]

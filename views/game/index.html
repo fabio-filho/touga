@@ -67,7 +67,17 @@
       </thread>
         {{mIndex = 0}}
         {{for mAG in mAuthGame:}}
-        {{mIndex+=1}}
+
+          {{if mIndex==0:}}
+              {{mOldAG=mAG}}
+              {{mIndex+=1}}
+          {{else:}}
+              {{if mOldAG.mPoints!=mAG.mPoints or mOldAG.mPoints!=mAG.mVictories or mOldAG.mPoints!=mAG.mDraws or mOldAG.mPoints!=mAG.mLosses or mOldAG.mPoints!=mAG.mProGoals or mOldAG.mPoints!=mAG.mGoalsAgainst :}}
+                  {{mOldAG=mAG}}
+                  {{mIndex+=1}}
+              {{pass}}              
+          {{pass}}
+
           <tbody>
             {{if mIndex%2==0:}}
              <tr>
