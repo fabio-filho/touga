@@ -72,10 +72,10 @@
               {{mOldAG=mAG}}
               {{mIndex+=1}}
           {{else:}}
-              {{if mOldAG.mPoints!=mAG.mPoints or mOldAG.mPoints!=mAG.mVictories or mOldAG.mPoints!=mAG.mDraws or mOldAG.mPoints!=mAG.mLosses or mOldAG.mPoints!=mAG.mProGoals or mOldAG.mPoints!=mAG.mGoalsAgainst :}}
+              {{if mOldAG.mPoints!=mAG.mPoints or mOldAG.mVictories!=mAG.mVictories or (mOldAG.mProGoals-mOldAG.mGoalsAgainst)!=(mAG.mProGoals-mAG.mGoalsAgainst):}}
                   {{mOldAG=mAG}}
                   {{mIndex+=1}}
-              {{pass}}              
+              {{pass}}
           {{pass}}
 
           <tbody>
